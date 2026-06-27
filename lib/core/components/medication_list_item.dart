@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
-import '../theme/app_radius.dart';
-import '../theme/app_text_styles.dart';
-import '../theme/app_spacing.dart';
 
 enum MedicationStatusType { completed, notTaken, scheduled }
 
@@ -13,74 +10,86 @@ class MedicationListItem extends StatelessWidget {
     required this.name,
     required this.timeText,
     required this.statusType,
-    required this.statusLabel,
   });
 
   final String name;
   final String timeText;
   final MedicationStatusType statusType;
-  final String statusLabel;
 
   @override
   Widget build(BuildContext context) {
-    final circleBg = switch (statusType) {
-      MedicationStatusType.completed => AppColors.primary500.withOpacity(0.18),
-      MedicationStatusType.notTaken => AppColors.error.withOpacity(0.12),
-      MedicationStatusType.scheduled => AppColors.warning.withOpacity(0.14),
-    };
+    final isCompleted = statusType == MedicationStatusType.completed;
+    final isActive = isCompleted;
 
-    final circleBorder = switch (statusType) {
-      MedicationStatusType.completed => AppColors.primary500,
-      MedicationStatusType.notTaken => AppColors.error,
-      MedicationStatusType.scheduled => AppColors.warning,
-    };
-
-    final icon = switch (statusType) {
-      MedicationStatusType.completed => Icons.check_rounded,
-      MedicationStatusType.notTaken => Icons.close_rounded,
-      MedicationStatusType.scheduled => Icons.access_time_rounded,
-    };
-
-    final iconColor = switch (statusType) {
-      MedicationStatusType.completed => AppColors.primary500,
-      MedicationStatusType.notTaken => AppColors.error,
-      MedicationStatusType.scheduled => AppColors.warning,
-    };
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: isActive
+            ? AppColors.primary500.withValues(alpha: 0.05)
+            : AppColors.surfaceMuted,
+        border: Border.all(
+          color: isActive
+              ? AppColors.primary500.withValues(alpha: 0.1)
+              : AppColors.borderLight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+      ),
       child: Row(
         children: [
           Container(
-            width: 32,
-            height: 32,
+            width: 40,
+            height: 40,
             decoration: BoxDecoration(
-              color: circleBg,
-              borderRadius: BorderRadius.circular(AppRadius.small),
-              border: Border.all(color: circleBorder.withOpacity(0.35)),
+              color: AppColors.surface,
+              shape: BoxShape.circle,
+              boxShadow: const [
+                BoxShadow(
+                  blurRadius: 2,
+                  offset: Offset(0, 1),
+                  color: Color(0x0D000000),
+                ),
+              ],
             ),
-            child: Icon(icon, size: 16, color: iconColor),
+            child: Icon(
+              Icons.medication_liquid_rounded,
+              size: 16,
+              color: isActive ? AppColors.primary500 : AppColors.tabInactive,
+            ),
           ),
-          const SizedBox(width: AppSpacing.sm),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(name, style: AppTextStyles.body),
-                const SizedBox(height: AppSpacing.xs),
-                Text(timeText, style: AppTextStyles.caption),
+                Text(
+                  name,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    height: 20 / 14,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textDark,
+                  ),
+                ),
+                Text(
+                  timeText,
+                  style: TextStyle(
+                    fontSize: 12,
+                    height: 16 / 12,
+                    fontWeight: FontWeight.w500,
+                    color: isActive ? AppColors.primary500 : AppColors.textSecondary,
+                  ),
+                ),
               ],
             ),
           ),
-          Text(
-            statusLabel,
-            style: AppTextStyles.caption.copyWith(
-              color: iconColor,
-            ),
+          Icon(
+            isActive ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
+            size: 20,
+            color: isActive ? AppColors.primary500 : AppColors.tabInactive,
           ),
         ],
       ),
     );
   }
 }
-

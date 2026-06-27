@@ -2,13 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../../app/tab_routes.dart';
 import '../../../../../core/theme/app_colors.dart';
-import '../../../../../core/theme/app_radius.dart';
-import '../../../../../core/theme/app_spacing.dart';
-import '../../../../../core/theme/app_text_styles.dart';
-import '../../../../../core/widgets/app_pill_button.dart';
-import '../../../../../core/widgets/app_shell.dart';
 import '../../../../../core/widgets/app_bottom_navigation_bar.dart';
-import '../../../../../core/widgets/app_card.dart';
+import '../../../../../core/widgets/app_shell.dart';
 
 class FamilyHealthStatusPage extends StatelessWidget {
   const FamilyHealthStatusPage({super.key});
@@ -20,280 +15,783 @@ class FamilyHealthStatusPage extends StatelessWidget {
       onSelectedTab: (tab) {
         Navigator.of(context).pushReplacementNamed(TabRoutes.routeForTab(tab));
       },
-      body: ListView(
-        padding: EdgeInsets.zero,
+      body: Stack(
         children: [
-          SizedBox(height: AppSpacing.md),
-          Text(
-            '오늘 가족 건강 현황',
-            style: AppTextStyles.heading,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const _FamilyPageHeader(),
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 128),
+                  children: const [
+                    _FamilySummaryCard(),
+                    SizedBox(height: 16),
+                    _FamilyMembersSectionHeader(),
+                    SizedBox(height: 16),
+                    _FamilyMemberCard(
+                      relation: '어머니',
+                      fullName: '김순자 · 68세',
+                      statusLabel: '안심 완료',
+                      statusType: _MemberStatusType.completed,
+                      lastUpdated: '마지막 업데이트 · 오늘 13:24',
+                      metrics: [
+                        _MemberMetric(
+                          emoji: '👟',
+                          value: '4,523보',
+                          label: '걸음수',
+                          style: _MetricStyle.success,
+                        ),
+                        _MemberMetric(
+                          emoji: '💊',
+                          value: '혈압약 ✓',
+                          label: '약 복용',
+                          style: _MetricStyle.success,
+                        ),
+                        _MemberMetric(
+                          emoji: '💊',
+                          value: '120/80',
+                          label: '혈압 (정상)',
+                          style: _MetricStyle.neutral,
+                        ),
+                        _MemberMetric(
+                          emoji: '😊',
+                          value: '기분 좋음',
+                          label: '기분 상태',
+                          style: _MetricStyle.mood,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16),
+                    _FamilyMemberCard(
+                      relation: '아버지',
+                      fullName: '김철수 · 71세',
+                      statusLabel: '안심 대기',
+                      statusType: _MemberStatusType.waiting,
+                      alertMessage: '아직 오늘 안심 체크를 하지 않았어요',
+                      lastUpdated: '마지막 업데이트 · 오늘 09:12',
+                      isHighlighted: true,
+                      metrics: [
+                        _MemberMetric(
+                          emoji: '👟',
+                          value: '2,103보',
+                          label: '걸음수',
+                          style: _MetricStyle.neutral,
+                        ),
+                        _MemberMetric(
+                          emoji: '💊',
+                          value: '혈압약 미복용',
+                          label: '약 복용',
+                          style: _MetricStyle.danger,
+                        ),
+                        _MemberMetric(
+                          emoji: '💊',
+                          value: '120/80',
+                          label: '혈압 (정상)',
+                          style: _MetricStyle.neutral,
+                        ),
+                        _MemberMetric(
+                          emoji: '😐',
+                          value: '기분 보통',
+                          label: '기분 상태',
+                          style: _MetricStyle.neutral,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16),
+                    _FamilyMemberCard(
+                      relation: '아들',
+                      fullName: '김민준 · 35세',
+                      statusLabel: '안심 완료',
+                      statusType: _MemberStatusType.completed,
+                      lastUpdated: '마지막 업데이트 · 오늘 11:58',
+                      metrics: [
+                        _MemberMetric(
+                          emoji: '👟',
+                          value: '8,112보',
+                          label: '걸음수',
+                          style: _MetricStyle.success,
+                        ),
+                        _MemberMetric(
+                          emoji: '💊',
+                          value: '비타민 ✓',
+                          label: '약 복용',
+                          style: _MetricStyle.success,
+                        ),
+                        _MemberMetric(
+                          emoji: '🩺',
+                          value: '정상',
+                          label: '건강 상태',
+                          style: _MetricStyle.neutralDark,
+                        ),
+                        _MemberMetric(
+                          emoji: '😊',
+                          value: '기분 좋음',
+                          label: '기분 상태',
+                          style: _MetricStyle.mood,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16),
+                    _FamilyMemberCard(
+                      relation: '딸',
+                      fullName: '김지영 · 32세',
+                      statusLabel: '안심 완료',
+                      statusType: _MemberStatusType.completed,
+                      lastUpdated: '마지막 업데이트 · 오늘 10:33',
+                      metrics: [
+                        _MemberMetric(
+                          emoji: '👟',
+                          value: '5,983보',
+                          label: '걸음수',
+                          style: _MetricStyle.success,
+                        ),
+                        _MemberMetric(
+                          emoji: '💊',
+                          value: '비타민C ✓',
+                          label: '약 복용',
+                          style: _MetricStyle.success,
+                        ),
+                        _MemberMetric(
+                          emoji: '🩺',
+                          value: '정상',
+                          label: '건강 상태',
+                          style: _MetricStyle.neutralDark,
+                        ),
+                        _MemberMetric(
+                          emoji: '😊',
+                          value: '기분 좋음',
+                          label: '기분 상태',
+                          style: _MetricStyle.mood,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: AppSpacing.md),
-          _FamilySafetyCard(
-            title: '가족 4명 중 3명 안심 완료',
-            percent: 0.75,
-            percentText: '75%',
+          Positioned(
+            left: 16,
+            right: 16,
+            bottom: 8,
+            child: _InviteFamilyButton(
+              onPressed: () => Navigator.of(context).pushNamed('/onboarding'),
+            ),
           ),
-          const SizedBox(height: AppSpacing.lg),
-          _MemberStatusCard(
-            name: '어머니',
-            ageText: '김수진, 68세',
-            safeLabel: '안심',
-            walkLabel: '4,523걸음',
-            medLabel: '복용완료',
-            tone: _MemberTone.success,
-            onTap: () => Navigator.of(context).pushNamed('/family/member'),
-          ),
-          _MemberStatusCard(
-            name: '아버지',
-            ageText: '박종국, 71세',
-            safeLabel: '주의 필요',
-            walkLabel: '2,103걸음',
-            medLabel: '복용 미완료',
-            tone: _MemberTone.error,
-            onTap: () => Navigator.of(context).pushNamed('/family/member'),
-          ),
-          _MemberStatusCard(
-            name: '아들',
-            ageText: '전병학, 35세',
-            safeLabel: '안심',
-            walkLabel: '8,112걸음',
-            medLabel: '복용예정',
-            tone: _MemberTone.scheduled,
-            onTap: () => Navigator.of(context).pushNamed('/family/member'),
-          ),
-          _MemberStatusCard(
-            name: '딸',
-            ageText: '정승수, 32세',
-            safeLabel: '안심',
-            walkLabel: '5,983걸음',
-            medLabel: '복용완료',
-            tone: _MemberTone.success,
-            onTap: () => Navigator.of(context).pushNamed('/family/member'),
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          AppPillButton(
-            variant: AppPillButtonVariant.primary,
-            label: '가족 초대하기',
-            icon: const Icon(Icons.group_add_rounded, color: AppColors.white),
-            height: 56,
-            onPressed: () => {},
-          ),
-          const SizedBox(height: AppSpacing.xl),
         ],
       ),
     );
   }
 }
 
-class _FamilySafetyCard extends StatelessWidget {
-  const _FamilySafetyCard({
-    required this.title,
-    required this.percent,
-    required this.percentText,
-  });
-
-  final String title;
-  final double percent;
-  final String percentText;
+class _FamilyPageHeader extends StatelessWidget {
+  const _FamilyPageHeader();
 
   @override
   Widget build(BuildContext context) {
-    return AppCard(
-      radius: AppRadius.large,
-      padding: const EdgeInsets.all(AppSpacing.lg),
-      color: AppColors.primary500,
-      showShadow: true,
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [AppColors.primary700, AppColors.primary500],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+    return Container(
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+      color: AppColors.background.withValues(alpha: 0.95),
+      child: const SafeArea(
+        bottom: false,
+        child: Text(
+          '약 복용 관리',
+          style: TextStyle(
+            fontSize: 18,
+            height: 28 / 18,
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.5,
+            color: AppColors.textDark,
           ),
-          borderRadius: BorderRadius.circular(AppRadius.large),
         ),
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                title,
-                style: AppTextStyles.sectionTitle.copyWith(color: AppColors.white),
+      ),
+    );
+  }
+}
+
+class _FamilySummaryCard extends StatelessWidget {
+  const _FamilySummaryCard();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppColors.primary500,
+            AppColors.primary600,
+            AppColors.primary700,
+          ],
+          stops: [0.0, 0.5, 1.0],
+        ),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 20,
+            offset: Offset(0, 4),
+            color: Color(0x4000C4A1),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '오늘 현황',
+                      style: TextStyle(
+                        fontSize: 13,
+                        height: 20 / 13,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white.withValues(alpha: 0.9),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      '가족 4명 중 3명 안심 완료',
+                      style: TextStyle(
+                        fontSize: 18,
+                        height: 22 / 18,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.2),
+                  shape: BoxShape.circle,
+                ),
+                child: const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '75%',
+                      style: TextStyle(
+                        fontSize: 20,
+                        height: 1,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      '완료율',
+                      style: TextStyle(
+                        fontSize: 10,
+                        height: 15 / 10,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(999),
+            child: LinearProgressIndicator(
+              value: 0.75,
+              minHeight: 10,
+              backgroundColor: Colors.white.withValues(alpha: 0.2),
+              valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            '1명 아직 안심 체크를 하지 않았어요',
+            style: TextStyle(
+              fontSize: 11,
+              height: 16 / 11,
+              fontWeight: FontWeight.w400,
+              color: Colors.white.withValues(alpha: 0.8),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: const [
+              Expanded(
+                child: _SummaryStatChip(
+                  icon: Icons.verified_rounded,
+                  text: '안심\n3/4',
+                ),
+              ),
+              SizedBox(width: 8),
+              Expanded(
+                child: _SummaryStatChip(
+                  icon: Icons.directions_walk_rounded,
+                  text: '걸음 평균\n5,180보',
+                ),
+              ),
+              SizedBox(width: 8),
+              Expanded(
+                child: _SummaryStatChip(
+                  icon: Icons.medication_rounded,
+                  text: '약\n2/3',
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SummaryStatChip extends StatelessWidget {
+  const _SummaryStatChip({
+    required this.icon,
+    required this.text,
+  });
+
+  final IconData icon;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.15),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 14, color: Colors.white),
+          const SizedBox(width: 6),
+          Expanded(
+            child: Text(
+              text,
+              style: const TextStyle(
+                fontSize: 12,
+                height: 18 / 12,
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
               ),
             ),
-            SizedBox(
-              width: 108,
-              height: 108,
-              child: Stack(
-                alignment: Alignment.center,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _FamilyMembersSectionHeader extends StatelessWidget {
+  const _FamilyMembersSectionHeader();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.only(top: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            '가족 구성원',
+            style: TextStyle(
+              fontSize: 15,
+              height: 22 / 15,
+              fontWeight: FontWeight.w700,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          Text(
+            '4명',
+            style: TextStyle(
+              fontSize: 12,
+              height: 18 / 12,
+              fontWeight: FontWeight.w500,
+              color: AppColors.tabInactive,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+enum _MemberStatusType { completed, waiting }
+
+enum _MetricStyle { success, neutral, neutralDark, mood, danger }
+
+class _MemberMetric {
+  const _MemberMetric({
+    required this.emoji,
+    required this.value,
+    required this.label,
+    required this.style,
+  });
+
+  final String emoji;
+  final String value;
+  final String label;
+  final _MetricStyle style;
+}
+
+class _FamilyMemberCard extends StatelessWidget {
+  const _FamilyMemberCard({
+    required this.relation,
+    required this.fullName,
+    required this.statusLabel,
+    required this.statusType,
+    required this.lastUpdated,
+    required this.metrics,
+    this.alertMessage,
+    this.isHighlighted = false,
+  });
+
+  final String relation;
+  final String fullName;
+  final String statusLabel;
+  final _MemberStatusType statusType;
+  final String lastUpdated;
+  final List<_MemberMetric> metrics;
+  final String? alertMessage;
+  final bool isHighlighted;
+
+  @override
+  Widget build(BuildContext context) {
+    final isWaiting = statusType == _MemberStatusType.waiting;
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(20),
+        border: isHighlighted
+            ? const Border.fromBorderSide(BorderSide(color: AppColors.alertOrangeBorder))
+            : null,
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 16,
+            offset: const Offset(0, 2),
+            color: isHighlighted
+                ? const Color(0x1FF97316)
+                : const Color(0x12000000),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      relation,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        height: 19 / 15,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    Text(
+                      fullName,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        height: 18 / 12,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              _StatusBadge(label: statusLabel, isWaiting: isWaiting),
+              const SizedBox(width: 4),
+              GestureDetector(
+                onTap: () => Navigator.of(context).pushNamed('/family/member'),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      '상세',
+                      style: TextStyle(
+                        fontSize: 12,
+                        height: 18 / 12,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.tabInactive,
+                      ),
+                    ),
+                    Icon(Icons.chevron_right, size: 12, color: AppColors.tabInactive),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          if (alertMessage != null) ...[
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: AppColors.alertOrangeBg,
+                border: Border.all(color: AppColors.alertOrangeBorder),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
                 children: [
-                  CircularProgressIndicator(
-                    value: percent,
-                    strokeWidth: 10,
-                    backgroundColor: AppColors.white.withOpacity(0.18),
-                    valueColor: const AlwaysStoppedAnimation<Color>(AppColors.white),
-                  ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        percentText,
-                        style: AppTextStyles.display.copyWith(fontSize: 28, color: AppColors.white),
+                  const Icon(Icons.warning_amber_rounded, size: 13, color: AppColors.featureOrange),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      alertMessage!,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        height: 18 / 12,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.featureOrange,
                       ),
-                      const SizedBox(height: AppSpacing.xs),
-                      Text(
-                        '완료',
-                        style: AppTextStyles.caption.copyWith(color: AppColors.white.withOpacity(0.9)),
-                      ),
-                    ],
+                    ),
                   ),
                 ],
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-enum _MemberTone { success, error, scheduled }
-
-class _MemberStatusCard extends StatelessWidget {
-  const _MemberStatusCard({
-    required this.name,
-    required this.ageText,
-    required this.safeLabel,
-    required this.walkLabel,
-    required this.medLabel,
-    required this.tone,
-    this.onTap,
-  });
-
-  final String name;
-  final String ageText;
-  final String safeLabel;
-  final String walkLabel;
-  final String medLabel;
-  final _MemberTone tone;
-  final VoidCallback? onTap;
-
-  Color get safeBg => switch (tone) {
-        _MemberTone.success => AppColors.primary100,
-        _MemberTone.error => AppColors.error.withOpacity(0.12),
-        _MemberTone.scheduled => AppColors.calendarScheduledBg,
-      };
-
-  Color get safeColor => switch (tone) {
-        _MemberTone.success => AppColors.primary700,
-        _MemberTone.error => AppColors.error,
-        _MemberTone.scheduled => AppColors.orange,
-      };
-
-  Color get dotColor => switch (tone) {
-        _MemberTone.success => AppColors.primary500,
-        _MemberTone.error => AppColors.error,
-        _MemberTone.scheduled => AppColors.warning,
-      };
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: AppSpacing.sm),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(AppRadius.medium),
-        onTap: onTap,
-        child: AppCard(
-          padding: const EdgeInsets.all(AppSpacing.md),
-          radius: AppRadius.medium,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(name, style: AppTextStyles.cardTitle),
-                        const SizedBox(height: AppSpacing.xs),
-                        Text(ageText, style: AppTextStyles.caption),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.sm,
-                      vertical: AppSpacing.xs / 1.0,
-                    ),
-                    decoration: BoxDecoration(
-                      color: safeBg,
-                      borderRadius: BorderRadius.circular(AppRadius.pill),
-                    ),
-                    child: Text(
-                      safeLabel,
-                      style: AppTextStyles.caption.copyWith(color: safeColor),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: AppSpacing.md),
-              Row(
-                children: [
-                  Expanded(
-                    child: _StatRow(label: '걸음 수', value: walkLabel, tone: tone),
-                  ),
-                  const SizedBox(width: AppSpacing.md),
-                  Expanded(
-                    child: _StatRow(label: '약 복용', value: medLabel, tone: tone),
-                  ),
-                ],
-              ),
-            ],
+          const SizedBox(height: 12),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final tileWidth = (constraints.maxWidth - 8) / 2;
+              return Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: metrics
+                    .map(
+                      (metric) => SizedBox(
+                        width: tileWidth,
+                        child: _MetricTile(metric: metric),
+                      ),
+                    )
+                    .toList(),
+              );
+            },
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _StatRow extends StatelessWidget {
-  const _StatRow({required this.label, required this.value, required this.tone});
-
-  final String label;
-  final String value;
-  final _MemberTone tone;
-
-  Color get toneColor => switch (tone) {
-        _MemberTone.success => AppColors.primary500,
-        _MemberTone.error => AppColors.error,
-        _MemberTone.scheduled => AppColors.warning,
-      };
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.sm),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppRadius.medium),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.circle, size: 10, color: toneColor),
-              const SizedBox(width: AppSpacing.xs),
-              Text(label, style: AppTextStyles.caption),
-            ],
+          const SizedBox(height: 12),
+          Text(
+            lastUpdated,
+            style: const TextStyle(
+              fontSize: 11,
+              height: 16 / 11,
+              fontWeight: FontWeight.w500,
+              color: AppColors.tabInactive,
+            ),
           ),
-          const SizedBox(height: AppSpacing.xs),
-          Text(value, style: AppTextStyles.body),
         ],
       ),
     );
   }
 }
 
+class _StatusBadge extends StatelessWidget {
+  const _StatusBadge({
+    required this.label,
+    required this.isWaiting,
+  });
+
+  final String label;
+  final bool isWaiting;
+
+  @override
+  Widget build(BuildContext context) {
+    if (isWaiting) {
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: AppColors.warningYellowBg,
+          border: Border.all(color: AppColors.warningYellowBorder),
+          borderRadius: BorderRadius.circular(999),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('⚠️', style: TextStyle(fontSize: 12, height: 1)),
+            const SizedBox(width: 4),
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 12,
+                height: 18 / 12,
+                fontWeight: FontWeight.w700,
+                color: AppColors.warningAmber,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: AppColors.successBg,
+        border: Border.all(color: AppColors.successBorder),
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.check_circle, size: 13, color: AppColors.success),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 12,
+              height: 18 / 12,
+              fontWeight: FontWeight.w700,
+              color: AppColors.success,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MetricTile extends StatelessWidget {
+  const _MetricTile({required this.metric});
+
+  final _MemberMetric metric;
+
+  @override
+  Widget build(BuildContext context) {
+    final (bg, border, valueColor) = switch (metric.style) {
+      _MetricStyle.success => (
+          AppColors.successBg,
+          AppColors.successBorder,
+          AppColors.success,
+        ),
+      _MetricStyle.neutral => (
+          AppColors.background,
+          AppColors.borderDefault,
+          AppColors.textSecondary,
+        ),
+      _MetricStyle.neutralDark => (
+          AppColors.background,
+          AppColors.borderDefault,
+          AppColors.textPrimary,
+        ),
+      _MetricStyle.mood => (
+          AppColors.warningYellowBg,
+          AppColors.warningYellowBorder,
+          AppColors.warningAmber,
+        ),
+      _MetricStyle.danger => (
+          AppColors.featureRedBg,
+          AppColors.featureRedBorder,
+          AppColors.dangerRed,
+        ),
+    };
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: bg,
+        border: Border.all(color: border),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        children: [
+          Text(metric.emoji, style: const TextStyle(fontSize: 16, height: 1)),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  metric.value,
+                  style: TextStyle(
+                    fontSize: 13,
+                    height: 16 / 13,
+                    fontWeight: FontWeight.w700,
+                    color: valueColor,
+                  ),
+                ),
+                Text(
+                  metric.label,
+                  style: const TextStyle(
+                    fontSize: 10,
+                    height: 15 / 10,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.tabInactive,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _InviteFamilyButton extends StatelessWidget {
+  const _InviteFamilyButton({required this.onPressed});
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 16,
+            offset: Offset(0, 4),
+            color: Color(0x5900C4A1),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onPressed,
+          borderRadius: BorderRadius.circular(20),
+          child: Ink(
+            height: 56,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [AppColors.primary500, AppColors.primary600],
+              ),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.group_add_rounded, size: 20, color: Colors.white),
+                SizedBox(width: 8),
+                Text(
+                  '가족 초대하기 +',
+                  style: TextStyle(
+                    fontSize: 16,
+                    height: 24 / 16,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
