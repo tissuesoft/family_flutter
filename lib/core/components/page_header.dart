@@ -1,7 +1,26 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
 import '../theme/app_text_styles.dart';
+
+class ScreenTitle extends StatelessWidget {
+  const ScreenTitle(
+    this.title, {
+    super.key,
+    this.textAlign = TextAlign.start,
+  });
+
+  final String title;
+  final TextAlign textAlign;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title,
+      textAlign: textAlign,
+      style: AppTextStyles.pageTitle,
+    );
+  }
+}
 
 class PageHeader extends StatelessWidget {
   const PageHeader({
@@ -29,16 +48,10 @@ class PageHeader extends StatelessWidget {
           const SizedBox(width: 8),
         ],
         Expanded(
-          child: Text(
-            title,
-            style: AppTextStyles.heading.copyWith(
-              color: AppColors.textPrimary,
-            ),
-          ),
+          child: ScreenTitle(title),
         ),
         if (trailing != null) trailing!,
       ],
     );
   }
 }
-

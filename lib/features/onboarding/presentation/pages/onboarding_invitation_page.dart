@@ -27,7 +27,7 @@ class OnboardingInvitationPage extends StatelessWidget {
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(32, 48, 32, 0),
+                  padding: const EdgeInsets.fromLTRB(32, 16, 32, 0),
                   child: Column(
                     children: const [
                       _FamilyIllustration(),
@@ -41,7 +41,10 @@ class OnboardingInvitationPage extends StatelessWidget {
                   ),
                 ),
               ),
-              const _InvitationBottomSheet(),
+              const SafeArea(
+                top: false,
+                child: _InvitationBottomSheet(),
+              ),
             ],
           ),
         ),
@@ -318,6 +321,7 @@ class _InvitationBottomSheet extends StatelessWidget {
               foregroundColor: AppColors.onboardingTextDark,
               border: const BorderSide(color: AppColors.borderLight),
               icon: Icons.copy_rounded,
+              iconColor: AppColors.onboardingTextMuted,
               label: '초대 코드 복사하기',
               height: 56,
             ),
@@ -358,6 +362,7 @@ class _InviteButton extends StatelessWidget {
     required this.label,
     required this.height,
     this.border,
+    this.iconColor,
   });
 
   final Color backgroundColor;
@@ -366,9 +371,11 @@ class _InviteButton extends StatelessWidget {
   final String label;
   final double height;
   final BorderSide? border;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
+    final resolvedIconColor = iconColor ?? foregroundColor;
     return SizedBox(
       width: double.infinity,
       height: height,
@@ -384,7 +391,11 @@ class _InviteButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: border == null ? 20 : 18, color: foregroundColor),
+              Icon(
+                icon,
+                size: border == null ? 20 : 18,
+                color: resolvedIconColor,
+              ),
               const SizedBox(width: 12),
               Text(
                 label,
@@ -442,6 +453,7 @@ class _PrimaryCtaButton extends StatelessWidget {
         boxShadow: const [
           BoxShadow(
             blurRadius: 30,
+            spreadRadius: -10,
             offset: Offset(0, 10),
             color: Color(0x6600C8B0),
           ),

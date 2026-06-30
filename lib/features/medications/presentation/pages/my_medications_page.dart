@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../app/tab_routes.dart';
 import '../../../../../core/charts/simple_bar_chart.dart';
 import '../../../../../core/components/medication_list_item.dart';
+import '../../../../../core/components/page_header.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/widgets/app_bottom_navigation_bar.dart';
 import '../../../../../core/widgets/app_shell.dart';
@@ -21,13 +21,12 @@ class _MyMedicationsPageState extends State<MyMedicationsPage> {
   Widget build(BuildContext context) {
     return AppShell(
       selectedTab: AppTab.meds,
-      onSelectedTab: (tab) {
-        Navigator.of(context).pushReplacementNamed(TabRoutes.routeForTab(tab));
-      },
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 16, 20, 120),
-        children: [
-          const _MedPageHeader(),
+      body: SafeArea(
+        bottom: false,
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 120),
+          children: [
+          const ScreenTitle('약 복용 관리'),
           const SizedBox(height: 16),
           _MedSegmentControl(
             selected: _segment,
@@ -35,7 +34,8 @@ class _MyMedicationsPageState extends State<MyMedicationsPage> {
           ),
           const SizedBox(height: 16),
           if (_segment == 'mine') ..._buildMyMedications() else ..._buildFamilyOverview(),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -77,24 +77,6 @@ class _MyMedicationsPageState extends State<MyMedicationsPage> {
         isNeutral: true,
       ),
     ];
-  }
-}
-
-class _MedPageHeader extends StatelessWidget {
-  const _MedPageHeader();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Text(
-      '약 복용 관리',
-      style: TextStyle(
-        fontSize: 18,
-        height: 28 / 18,
-        fontWeight: FontWeight.w700,
-        letterSpacing: -0.5,
-        color: AppColors.textDark,
-      ),
-    );
   }
 }
 

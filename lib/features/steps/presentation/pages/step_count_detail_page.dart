@@ -2,8 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../../../../app/tab_routes.dart';
 import '../../../../../core/charts/simple_bar_chart.dart';
+import '../../../../../core/components/page_header.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/widgets/app_bottom_navigation_bar.dart';
 import '../../../../../core/widgets/app_shell.dart';
@@ -15,58 +15,35 @@ class StepCountDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppShell(
       selectedTab: AppTab.steps,
-      onSelectedTab: (tab) {
-        Navigator.of(context).pushReplacementNamed(TabRoutes.routeForTab(tab));
-      },
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 112),
-        children: const [
-          _StepsPageHeader(),
-          SizedBox(height: 20),
-          _TodayStepsCard(),
-          SizedBox(height: 20),
-          _FatherActivityAlert(),
-          SizedBox(height: 20),
-          _WeeklyStepsSection(),
-          SizedBox(height: 20),
-          _FamilyStepsSection(),
-          SizedBox(height: 20),
-          _MonthlyStatsSection(),
-        ],
+      body: SafeArea(
+        bottom: false,
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(20, 8, 20, 112),
+          children: [
+            const ScreenTitle('내 걸음 수'),
+            const SizedBox(height: 8),
+            Text(
+              '2025년 1월 27일 월요일',
+              style: TextStyle(
+                fontSize: 12,
+                height: 16 / 12,
+                fontWeight: FontWeight.w500,
+                color: AppColors.tabInactive,
+              ),
+            ),
+            const SizedBox(height: 20),
+            const _TodayStepsCard(),
+            const SizedBox(height: 20),
+            const _FatherActivityAlert(),
+            const SizedBox(height: 20),
+            const _WeeklyStepsSection(),
+            const SizedBox(height: 20),
+            const _FamilyStepsSection(),
+            const SizedBox(height: 20),
+            const _MonthlyStatsSection(),
+          ],
+        ),
       ),
-    );
-  }
-}
-
-class _StepsPageHeader extends StatelessWidget {
-  const _StepsPageHeader();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          '내 걸음 수',
-          style: TextStyle(
-            fontSize: 18,
-            height: 24 / 18,
-            fontWeight: FontWeight.w700,
-            letterSpacing: -0.4,
-            color: AppColors.textDark,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          '2025년 1월 27일 월요일',
-          style: TextStyle(
-            fontSize: 12,
-            height: 16 / 12,
-            fontWeight: FontWeight.w500,
-            color: AppColors.tabInactive,
-          ),
-        ),
-      ],
     );
   }
 }

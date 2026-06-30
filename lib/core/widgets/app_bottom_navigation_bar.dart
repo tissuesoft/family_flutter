@@ -42,7 +42,9 @@ class AppBottomNavigationBar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: _tabs.map((tab) {
                   final isSelected = selectedTab == tab.$1;
-                  final color = isSelected ? AppColors.primary500 : AppColors.tabInactive;
+                  final color = isSelected
+                      ? AppColors.primary500
+                      : AppColors.tabInactive;
                   return Expanded(
                     child: InkWell(
                       onTap: () => onSelectedTab(tab.$1),
@@ -52,14 +54,16 @@ class AppBottomNavigationBar extends StatelessWidget {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(tab.$2, size: 20, color: color),
+                            Icon(tab.$2, size: 28, color: color),
                             const SizedBox(height: 4),
                             Text(
                               tab.$3,
                               style: TextStyle(
                                 fontSize: 10,
                                 height: 1.5,
-                                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                                fontWeight: isSelected
+                                    ? FontWeight.w700
+                                    : FontWeight.w500,
                                 color: color,
                               ),
                             ),

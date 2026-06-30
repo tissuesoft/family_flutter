@@ -2,10 +2,9 @@ import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-
-import '../../../../../app/tab_routes.dart';
 import '../../../../../core/charts/simple_bar_chart.dart';
 import '../../../../../core/charts/sparkline_chart.dart';
+import '../../../../../core/components/page_header.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/widgets/app_bottom_navigation_bar.dart';
 import '../../../../../core/widgets/app_shell.dart';
@@ -26,9 +25,6 @@ class _FamilyMemberDetailPageState extends State<FamilyMemberDetailPage> {
   Widget build(BuildContext context) {
     return AppShell(
       selectedTab: AppTab.family,
-      onSelectedTab: (tab) {
-        Navigator.of(context).pushReplacementNamed(TabRoutes.routeForTab(tab));
-      },
       body: ListView(
         padding: const EdgeInsets.fromLTRB(0, 0, 0, 112),
         children: [
@@ -122,7 +118,6 @@ class _DetailGradientHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -135,27 +130,26 @@ class _DetailGradientHeader extends StatelessWidget {
           stops: [0.0, 0.4, 1.0],
         ),
       ),
-      child: Row(
-        children: [
-          _HeaderIconButton(
-            icon: Icons.arrow_back_ios_new_rounded,
-            onTap: () => Navigator.of(context).maybePop(),
-          ),
-          Expanded(
-            child: Text(
-              title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 18,
-                height: 28 / 18,
-                fontWeight: FontWeight.w700,
-                letterSpacing: -1.35,
-                color: AppColors.textDark,
+      child: SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
+          child: Row(
+            children: [
+              _HeaderIconButton(
+                icon: Icons.arrow_back_ios_new_rounded,
+                onTap: () => Navigator.of(context).maybePop(),
               ),
-            ),
+              Expanded(
+                child: ScreenTitle(
+                  title,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const _HeaderIconButton(icon: Icons.more_horiz_rounded),
+            ],
           ),
-          const _HeaderIconButton(icon: Icons.more_horiz_rounded),
-        ],
+        ),
       ),
     );
   }

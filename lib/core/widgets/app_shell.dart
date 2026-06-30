@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../app/tab_navigation.dart';
 import 'app_bottom_navigation_bar.dart';
 import '../theme/app_colors.dart';
 
@@ -8,12 +9,10 @@ class AppShell extends StatelessWidget {
     super.key,
     required this.body,
     required this.selectedTab,
-    required this.onSelectedTab,
   });
 
   final Widget body;
   final AppTab selectedTab;
-  final ValueChanged<AppTab> onSelectedTab;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +21,7 @@ class AppShell extends StatelessWidget {
       body: body,
       bottomNavigationBar: AppBottomNavigationBar(
         selectedTab: selectedTab,
-        onSelectedTab: onSelectedTab,
+        onSelectedTab: (tab) => TabNavigation.switchTab(context, tab),
       ),
     );
   }

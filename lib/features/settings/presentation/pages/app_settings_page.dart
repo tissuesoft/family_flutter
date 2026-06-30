@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../app/tab_routes.dart';
+import '../../../../../core/components/page_header.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/widgets/app_bottom_navigation_bar.dart';
 import '../../../../../core/widgets/app_shell.dart';
@@ -24,13 +24,12 @@ class _AppSettingsPageState extends State<AppSettingsPage> {
   Widget build(BuildContext context) {
     return AppShell(
       selectedTab: AppTab.settings,
-      onSelectedTab: (tab) {
-        Navigator.of(context).pushReplacementNamed(TabRoutes.routeForTab(tab));
-      },
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 16, 20, 112),
-        children: [
-          const _SettingsHeader(),
+      body: SafeArea(
+        bottom: false,
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 112),
+          children: [
+            const ScreenTitle('설정'),
           const SizedBox(height: 20),
           const _ProfileSection(),
           const SizedBox(height: 20),
@@ -56,25 +55,8 @@ class _AppSettingsPageState extends State<AppSettingsPage> {
           const _PremiumSection(),
           const SizedBox(height: 20),
           const _AppInfoSection(),
-        ],
-      ),
-    );
-  }
-}
-
-class _SettingsHeader extends StatelessWidget {
-  const _SettingsHeader();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Text(
-      '설정',
-      style: TextStyle(
-        fontSize: 18,
-        height: 32 / 18,
-        fontWeight: FontWeight.w700,
-        letterSpacing: -0.6,
-        color: AppColors.textDark,
+          ],
+        ),
       ),
     );
   }
@@ -216,7 +198,11 @@ class _ProfileSection extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 4),
-                  Icon(Icons.chevron_right, size: 10, color: AppColors.primary500),
+                  Icon(
+                    Icons.chevron_right,
+                    size: 10,
+                    color: AppColors.primary500,
+                  ),
                 ],
               ),
             ),
@@ -317,7 +303,11 @@ class _InviteIcon extends StatelessWidget {
         color: AppColors.primary500.withValues(alpha: 0.1),
         shape: BoxShape.circle,
       ),
-      child: const Icon(Icons.person_add_alt_1_rounded, size: 14, color: AppColors.primary500),
+      child: const Icon(
+        Icons.person_add_alt_1_rounded,
+        size: 14,
+        color: AppColors.primary500,
+      ),
     );
   }
 }
@@ -354,7 +344,10 @@ class _FamilyMemberRow extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: const Color(0xFFE5F9F6),
                           borderRadius: BorderRadius.circular(999),
@@ -462,16 +455,6 @@ class _NotificationSection extends StatelessWidget {
           ),
           const _SettingsDivider(),
           _NotificationToggleRow(
-            title: '가족 SOS 호출',
-            subtitle: '중요 알림 — 항상 활성화',
-            subtitleColor: AppColors.dangerRedLight,
-            showAlertDot: true,
-            value: sos,
-            onChanged: onSosChanged,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-          ),
-          const _SettingsDivider(),
-          _NotificationToggleRow(
             title: '일일 건강 요약 알림',
             value: dailySummary,
             onChanged: onDailySummaryChanged,
@@ -525,7 +508,11 @@ class _NotificationSection extends StatelessWidget {
                         ),
                       ),
                       SizedBox(width: 4),
-                      Icon(Icons.edit_outlined, size: 10, color: AppColors.primary500),
+                      Icon(
+                        Icons.edit_outlined,
+                        size: 10,
+                        color: AppColors.primary500,
+                      ),
                     ],
                   ),
                 ),
@@ -614,10 +601,7 @@ class _NotificationToggleRow extends StatelessWidget {
 }
 
 class _SettingsSwitch extends StatelessWidget {
-  const _SettingsSwitch({
-    required this.value,
-    required this.onChanged,
-  });
+  const _SettingsSwitch({required this.value, required this.onChanged});
 
   final bool value;
   final ValueChanged<bool> onChanged;
@@ -765,7 +749,9 @@ class _PrivacyRow extends StatelessWidget {
                   Icon(
                     isShared ? Icons.group_rounded : Icons.lock_outline_rounded,
                     size: 10,
-                    color: isShared ? AppColors.primary500 : AppColors.textSecondary,
+                    color: isShared
+                        ? AppColors.primary500
+                        : AppColors.textSecondary,
                   ),
                   const SizedBox(width: 4),
                   Text(
@@ -775,7 +761,9 @@ class _PrivacyRow extends StatelessWidget {
                       height: 16 / 12,
                       fontWeight: FontWeight.w700,
                       letterSpacing: -0.49,
-                      color: isShared ? AppColors.primary500 : AppColors.textSecondary,
+                      color: isShared
+                          ? AppColors.primary500
+                          : AppColors.textSecondary,
                     ),
                   ),
                 ],
@@ -937,7 +925,11 @@ class _AppInfoSection extends StatelessWidget {
       padding: EdgeInsets.zero,
       child: Column(
         children: [
-          const _AppInfoRow(label: '앱 버전', trailing: '1.0.0', showChevron: false),
+          const _AppInfoRow(
+            label: '앱 버전',
+            trailing: '1.0.0',
+            showChevron: false,
+          ),
           const _SettingsDivider(),
           const _AppInfoRow(label: '이용약관'),
           const _SettingsDivider(),
@@ -985,7 +977,9 @@ class _AppInfoRow extends StatelessWidget {
                   height: 20 / 14,
                   fontWeight: FontWeight.w600,
                   letterSpacing: isDanger ? -0.85 : -0.71,
-                  color: isDanger ? AppColors.dangerRedLight : AppColors.textDark,
+                  color: isDanger
+                      ? AppColors.dangerRedLight
+                      : AppColors.textDark,
                 ),
               ),
             ),
@@ -1001,7 +995,11 @@ class _AppInfoRow extends StatelessWidget {
                 ),
               ),
             if (showChevron && !isDanger)
-              const Icon(Icons.chevron_right, size: 14, color: Color(0xFFD1D5DB)),
+              const Icon(
+                Icons.chevron_right,
+                size: 14,
+                color: Color(0xFFD1D5DB),
+              ),
             if (trailingIcon != null)
               Icon(trailingIcon, size: 14, color: const Color(0xFFFCA5A5)),
           ],

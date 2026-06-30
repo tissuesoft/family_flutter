@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../app/tab_routes.dart';
 import '../../../../../core/components/health_score_card.dart';
 import '../../../../../core/components/medication_list_item.dart';
+import '../../../../../core/components/page_header.dart';
 import '../../../../../core/charts/simple_bar_chart.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/widgets/app_bottom_navigation_bar.dart';
@@ -15,15 +15,12 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppShell(
       selectedTab: AppTab.home,
-      onSelectedTab: (tab) {
-        Navigator.of(context).pushReplacementNamed(TabRoutes.routeForTab(tab));
-      },
       body: SafeArea(
         bottom: false,
         child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 96),
           children: const [
-            _HomeHeader(),
+            const ScreenTitle('가족안심'),
             SizedBox(height: 24),
             HealthScoreCard(
               title: '오늘 내 건강 점수',
@@ -57,24 +54,6 @@ class HomePage extends StatelessWidget {
             _StepsSection(),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _HomeHeader extends StatelessWidget {
-  const _HomeHeader();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Text(
-      '가족안심',
-      style: TextStyle(
-        fontSize: 24,
-        height: 32 / 24,
-        fontWeight: FontWeight.w700,
-        letterSpacing: -0.6,
-        color: AppColors.primary500,
       ),
     );
   }

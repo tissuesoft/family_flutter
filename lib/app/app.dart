@@ -17,9 +17,10 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: '가족안심',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light(),
-      initialRoute: '/home',
+      initialRoute: '/onboarding',
       routes: {
         '/home': (_) => const HomePage(),
         '/family': (_) => const FamilyHealthStatusPage(),

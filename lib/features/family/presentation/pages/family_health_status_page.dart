@@ -1,171 +1,183 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../app/tab_routes.dart';
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/components/page_header.dart';
 import '../../../../../core/widgets/app_bottom_navigation_bar.dart';
 import '../../../../../core/widgets/app_shell.dart';
 
-class FamilyHealthStatusPage extends StatelessWidget {
+enum _FamilyGroup { ourFamily, couple, friends }
+
+class FamilyHealthStatusPage extends StatefulWidget {
   const FamilyHealthStatusPage({super.key});
+
+  @override
+  State<FamilyHealthStatusPage> createState() => _FamilyHealthStatusPageState();
+}
+
+class _FamilyHealthStatusPageState extends State<FamilyHealthStatusPage> {
+  _FamilyGroup _group = _FamilyGroup.ourFamily;
 
   @override
   Widget build(BuildContext context) {
     return AppShell(
       selectedTab: AppTab.family,
-      onSelectedTab: (tab) {
-        Navigator.of(context).pushReplacementNamed(TabRoutes.routeForTab(tab));
-      },
       body: Stack(
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const _FamilyPageHeader(),
+              _FamilyPageHeader(
+                group: _group,
+                onGroupChanged: (value) => setState(() => _group = value),
+              ),
               Expanded(
                 child: ListView(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 128),
-                  children: const [
-                    _FamilySummaryCard(),
-                    SizedBox(height: 16),
-                    _FamilyMembersSectionHeader(),
-                    SizedBox(height: 16),
-                    _FamilyMemberCard(
-                      relation: '어머니',
-                      fullName: '김순자 · 68세',
-                      statusLabel: '안심 완료',
-                      statusType: _MemberStatusType.completed,
-                      lastUpdated: '마지막 업데이트 · 오늘 13:24',
-                      metrics: [
-                        _MemberMetric(
-                          emoji: '👟',
-                          value: '4,523보',
-                          label: '걸음수',
-                          style: _MetricStyle.success,
-                        ),
-                        _MemberMetric(
-                          emoji: '💊',
-                          value: '혈압약 ✓',
-                          label: '약 복용',
-                          style: _MetricStyle.success,
-                        ),
-                        _MemberMetric(
-                          emoji: '💊',
-                          value: '120/80',
-                          label: '혈압 (정상)',
-                          style: _MetricStyle.neutral,
-                        ),
-                        _MemberMetric(
-                          emoji: '😊',
-                          value: '기분 좋음',
-                          label: '기분 상태',
-                          style: _MetricStyle.mood,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 16),
-                    _FamilyMemberCard(
-                      relation: '아버지',
-                      fullName: '김철수 · 71세',
-                      statusLabel: '안심 대기',
-                      statusType: _MemberStatusType.waiting,
-                      alertMessage: '아직 오늘 안심 체크를 하지 않았어요',
-                      lastUpdated: '마지막 업데이트 · 오늘 09:12',
-                      isHighlighted: true,
-                      metrics: [
-                        _MemberMetric(
-                          emoji: '👟',
-                          value: '2,103보',
-                          label: '걸음수',
-                          style: _MetricStyle.neutral,
-                        ),
-                        _MemberMetric(
-                          emoji: '💊',
-                          value: '혈압약 미복용',
-                          label: '약 복용',
-                          style: _MetricStyle.danger,
-                        ),
-                        _MemberMetric(
-                          emoji: '💊',
-                          value: '120/80',
-                          label: '혈압 (정상)',
-                          style: _MetricStyle.neutral,
-                        ),
-                        _MemberMetric(
-                          emoji: '😐',
-                          value: '기분 보통',
-                          label: '기분 상태',
-                          style: _MetricStyle.neutral,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 16),
-                    _FamilyMemberCard(
-                      relation: '아들',
-                      fullName: '김민준 · 35세',
-                      statusLabel: '안심 완료',
-                      statusType: _MemberStatusType.completed,
-                      lastUpdated: '마지막 업데이트 · 오늘 11:58',
-                      metrics: [
-                        _MemberMetric(
-                          emoji: '👟',
-                          value: '8,112보',
-                          label: '걸음수',
-                          style: _MetricStyle.success,
-                        ),
-                        _MemberMetric(
-                          emoji: '💊',
-                          value: '비타민 ✓',
-                          label: '약 복용',
-                          style: _MetricStyle.success,
-                        ),
-                        _MemberMetric(
-                          emoji: '🩺',
-                          value: '정상',
-                          label: '건강 상태',
-                          style: _MetricStyle.neutralDark,
-                        ),
-                        _MemberMetric(
-                          emoji: '😊',
-                          value: '기분 좋음',
-                          label: '기분 상태',
-                          style: _MetricStyle.mood,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 16),
-                    _FamilyMemberCard(
-                      relation: '딸',
-                      fullName: '김지영 · 32세',
-                      statusLabel: '안심 완료',
-                      statusType: _MemberStatusType.completed,
-                      lastUpdated: '마지막 업데이트 · 오늘 10:33',
-                      metrics: [
-                        _MemberMetric(
-                          emoji: '👟',
-                          value: '5,983보',
-                          label: '걸음수',
-                          style: _MetricStyle.success,
-                        ),
-                        _MemberMetric(
-                          emoji: '💊',
-                          value: '비타민C ✓',
-                          label: '약 복용',
-                          style: _MetricStyle.success,
-                        ),
-                        _MemberMetric(
-                          emoji: '🩺',
-                          value: '정상',
-                          label: '건강 상태',
-                          style: _MetricStyle.neutralDark,
-                        ),
-                        _MemberMetric(
-                          emoji: '😊',
-                          value: '기분 좋음',
-                          label: '기분 상태',
-                          style: _MetricStyle.mood,
-                        ),
-                      ],
-                    ),
+                  children: [
+                    if (_group == _FamilyGroup.ourFamily) ...const [
+                      _FamilySummaryCard(),
+                      SizedBox(height: 16),
+                      _FamilyMembersSectionHeader(),
+                      SizedBox(height: 16),
+                      _FamilyMemberCard(
+                        relation: '어머니',
+                        fullName: '김순자 · 68세',
+                        statusLabel: '안심 완료',
+                        statusType: _MemberStatusType.completed,
+                        lastUpdated: '마지막 업데이트 · 오늘 13:24',
+                        metrics: [
+                          _MemberMetric(
+                            emoji: '👟',
+                            value: '4,523보',
+                            label: '걸음수',
+                            style: _MetricStyle.success,
+                          ),
+                          _MemberMetric(
+                            emoji: '💊',
+                            value: '혈압약 ✓',
+                            label: '약 복용',
+                            style: _MetricStyle.success,
+                          ),
+                          _MemberMetric(
+                            emoji: '💊',
+                            value: '120/80',
+                            label: '혈압 (정상)',
+                            style: _MetricStyle.neutral,
+                          ),
+                          _MemberMetric(
+                            emoji: '😊',
+                            value: '기분 좋음',
+                            label: '기분 상태',
+                            style: _MetricStyle.mood,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                      _FamilyMemberCard(
+                        relation: '아버지',
+                        fullName: '김철수 · 71세',
+                        statusLabel: '안심 대기',
+                        statusType: _MemberStatusType.waiting,
+                        alertMessage: '아직 오늘 안심 체크를 하지 않았어요',
+                        lastUpdated: '마지막 업데이트 · 오늘 09:12',
+                        isHighlighted: true,
+                        metrics: [
+                          _MemberMetric(
+                            emoji: '👟',
+                            value: '2,103보',
+                            label: '걸음수',
+                            style: _MetricStyle.muted,
+                          ),
+                          _MemberMetric(
+                            emoji: '💊',
+                            value: '혈압약 미복용',
+                            label: '약 복용',
+                            style: _MetricStyle.danger,
+                          ),
+                          _MemberMetric(
+                            emoji: '💊',
+                            value: '120/80',
+                            label: '혈압 (정상)',
+                            style: _MetricStyle.neutral,
+                          ),
+                          _MemberMetric(
+                            emoji: '😐',
+                            value: '기분 보통',
+                            label: '기분 상태',
+                            style: _MetricStyle.neutral,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                      _FamilyMemberCard(
+                        relation: '아들',
+                        fullName: '김민준 · 35세',
+                        statusLabel: '안심 완료',
+                        statusType: _MemberStatusType.completed,
+                        lastUpdated: '마지막 업데이트 · 오늘 11:58',
+                        metrics: [
+                          _MemberMetric(
+                            emoji: '👟',
+                            value: '8,112보',
+                            label: '걸음수',
+                            style: _MetricStyle.success,
+                          ),
+                          _MemberMetric(
+                            emoji: '💊',
+                            value: '비타민 ✓',
+                            label: '약 복용',
+                            style: _MetricStyle.success,
+                          ),
+                          _MemberMetric(
+                            emoji: '🩺',
+                            value: '정상',
+                            label: '건강 상태',
+                            style: _MetricStyle.neutralDark,
+                          ),
+                          _MemberMetric(
+                            emoji: '😊',
+                            value: '기분 좋음',
+                            label: '기분 상태',
+                            style: _MetricStyle.mood,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                      _FamilyMemberCard(
+                        relation: '딸',
+                        fullName: '김지영 · 32세',
+                        statusLabel: '안심 완료',
+                        statusType: _MemberStatusType.completed,
+                        lastUpdated: '마지막 업데이트 · 오늘 10:33',
+                        metrics: [
+                          _MemberMetric(
+                            emoji: '👟',
+                            value: '5,983보',
+                            label: '걸음수',
+                            style: _MetricStyle.success,
+                          ),
+                          _MemberMetric(
+                            emoji: '💊',
+                            value: '비타민C ✓',
+                            label: '약 복용',
+                            style: _MetricStyle.success,
+                          ),
+                          _MemberMetric(
+                            emoji: '🩺',
+                            value: '정상',
+                            label: '건강 상태',
+                            style: _MetricStyle.neutralDark,
+                          ),
+                          _MemberMetric(
+                            emoji: '😊',
+                            value: '기분 좋음',
+                            label: '기분 상태',
+                            style: _MetricStyle.mood,
+                          ),
+                        ],
+                      ),
+                    ] else
+                      const _EmptyGroupPlaceholder(),
                   ],
                 ),
               ),
@@ -186,23 +198,120 @@ class FamilyHealthStatusPage extends StatelessWidget {
 }
 
 class _FamilyPageHeader extends StatelessWidget {
-  const _FamilyPageHeader();
+  const _FamilyPageHeader({
+    required this.group,
+    required this.onGroupChanged,
+  });
+
+  final _FamilyGroup group;
+  final ValueChanged<_FamilyGroup> onGroupChanged;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+    return ColoredBox(
       color: AppColors.background.withValues(alpha: 0.95),
-      child: const SafeArea(
+      child: SafeArea(
         bottom: false,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Padding(
+              padding: EdgeInsets.fromLTRB(20, 16, 20, 0),
+              child: ScreenTitle('약 복용 관리'),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _GroupTab(
+                      label: '우리 가족',
+                      isSelected: group == _FamilyGroup.ourFamily,
+                      onTap: () => onGroupChanged(_FamilyGroup.ourFamily),
+                    ),
+                    const SizedBox(width: 16),
+                    _GroupTab(
+                      label: '나와 아내',
+                      isSelected: group == _FamilyGroup.couple,
+                      onTap: () => onGroupChanged(_FamilyGroup.couple),
+                    ),
+                    const SizedBox(width: 16),
+                    _GroupTab(
+                      label: '친구들',
+                      isSelected: group == _FamilyGroup.friends,
+                      onTap: () => onGroupChanged(_FamilyGroup.friends),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _GroupTab extends StatelessWidget {
+  const _GroupTab({
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: IntrinsicWidth(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 15,
+                height: 22 / 15,
+                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                color: isSelected ? AppColors.success : AppColors.tabInactive,
+              ),
+            ),
+            const SizedBox(height: 4),
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              height: 2,
+              decoration: BoxDecoration(
+                color: isSelected ? AppColors.success : Colors.transparent,
+                borderRadius: BorderRadius.circular(9999),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _EmptyGroupPlaceholder extends StatelessWidget {
+  const _EmptyGroupPlaceholder();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 48),
+      child: Center(
         child: Text(
-          '약 복용 관리',
+          '표시할 구성원이 없습니다',
           style: TextStyle(
-            fontSize: 18,
-            height: 28 / 18,
-            fontWeight: FontWeight.w700,
-            letterSpacing: -0.5,
-            color: AppColors.textDark,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: AppColors.tabInactive,
           ),
         ),
       ),
@@ -219,8 +328,8 @@ class _FamilySummaryCard extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+          begin: Alignment(-0.62, 1.0),
+          end: Alignment(0.62, -0.79),
           colors: [
             AppColors.primary500,
             AppColors.primary600,
@@ -275,10 +384,10 @@ class _FamilySummaryCard extends StatelessWidget {
                   color: Colors.white.withValues(alpha: 0.2),
                   shape: BoxShape.circle,
                 ),
-                child: const Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       '75%',
                       style: TextStyle(
                         fontSize: 20,
@@ -293,7 +402,7 @@ class _FamilySummaryCard extends StatelessWidget {
                         fontSize: 10,
                         height: 15 / 10,
                         fontWeight: FontWeight.w400,
-                        color: Colors.white,
+                        color: Colors.white.withValues(alpha: 0.8),
                       ),
                     ),
                   ],
@@ -396,7 +505,7 @@ class _FamilyMembersSectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Padding(
-      padding: EdgeInsets.only(top: 4),
+      padding: EdgeInsets.fromLTRB(4, 4, 4, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -406,6 +515,7 @@ class _FamilyMembersSectionHeader extends StatelessWidget {
               fontSize: 15,
               height: 22 / 15,
               fontWeight: FontWeight.w700,
+              letterSpacing: 0.0078125,
               color: AppColors.textPrimary,
             ),
           ),
@@ -415,6 +525,7 @@ class _FamilyMembersSectionHeader extends StatelessWidget {
               fontSize: 12,
               height: 18 / 12,
               fontWeight: FontWeight.w500,
+              letterSpacing: 0.0927734,
               color: AppColors.tabInactive,
             ),
           ),
@@ -426,7 +537,7 @@ class _FamilyMembersSectionHeader extends StatelessWidget {
 
 enum _MemberStatusType { completed, waiting }
 
-enum _MetricStyle { success, neutral, neutralDark, mood, danger }
+enum _MetricStyle { success, neutral, neutralDark, mood, danger, muted }
 
 class _MemberMetric {
   const _MemberMetric({
@@ -473,7 +584,9 @@ class _FamilyMemberCard extends StatelessWidget {
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(20),
         border: isHighlighted
-            ? const Border.fromBorderSide(BorderSide(color: AppColors.alertOrangeBorder))
+            ? const Border.fromBorderSide(
+                BorderSide(color: AppColors.alertOrangeBorder),
+              )
             : null,
         boxShadow: [
           BoxShadow(
@@ -501,6 +614,7 @@ class _FamilyMemberCard extends StatelessWidget {
                         fontSize: 15,
                         height: 19 / 15,
                         fontWeight: FontWeight.w700,
+                        letterSpacing: 0.0195312,
                         color: AppColors.textPrimary,
                       ),
                     ),
@@ -510,6 +624,7 @@ class _FamilyMemberCard extends StatelessWidget {
                         fontSize: 12,
                         height: 18 / 12,
                         fontWeight: FontWeight.w500,
+                        letterSpacing: 0.00878906,
                         color: AppColors.textSecondary,
                       ),
                     ),
@@ -523,16 +638,24 @@ class _FamilyMemberCard extends StatelessWidget {
                 child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      '상세',
-                      style: TextStyle(
-                        fontSize: 12,
-                        height: 18 / 12,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.tabInactive,
+                    Padding(
+                      padding: EdgeInsets.only(left: 8),
+                      child: Text(
+                        '상세',
+                        style: TextStyle(
+                          fontSize: 12,
+                          height: 18 / 12,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 0.0761719,
+                          color: AppColors.tabInactive,
+                        ),
                       ),
                     ),
-                    Icon(Icons.chevron_right, size: 12, color: AppColors.tabInactive),
+                    Icon(
+                      Icons.chevron_right,
+                      size: 12,
+                      color: AppColors.tabInactive,
+                    ),
                   ],
                 ),
               ),
@@ -549,7 +672,11 @@ class _FamilyMemberCard extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.warning_amber_rounded, size: 13, color: AppColors.featureOrange),
+                  const Icon(
+                    Icons.warning_amber_rounded,
+                    size: 13,
+                    color: AppColors.featureOrange,
+                  ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -558,6 +685,7 @@ class _FamilyMemberCard extends StatelessWidget {
                         fontSize: 12,
                         height: 18 / 12,
                         fontWeight: FontWeight.w700,
+                        letterSpacing: 0.00292969,
                         color: AppColors.featureOrange,
                       ),
                     ),
@@ -630,6 +758,7 @@ class _StatusBadge extends StatelessWidget {
                 fontSize: 12,
                 height: 18 / 12,
                 fontWeight: FontWeight.w700,
+                letterSpacing: 0.0234375,
                 color: AppColors.warningAmber,
               ),
             ),
@@ -656,6 +785,7 @@ class _StatusBadge extends StatelessWidget {
               fontSize: 12,
               height: 18 / 12,
               fontWeight: FontWeight.w700,
+              letterSpacing: 0.0234375,
               color: AppColors.success,
             ),
           ),
@@ -680,6 +810,11 @@ class _MetricTile extends StatelessWidget {
         ),
       _MetricStyle.neutral => (
           AppColors.background,
+          AppColors.borderDefault,
+          AppColors.textSecondary,
+        ),
+      _MetricStyle.muted => (
+          AppColors.progressTrack,
           AppColors.borderDefault,
           AppColors.textSecondary,
         ),

@@ -43,6 +43,16 @@ class AppTextStyles {
     height: 1.3,
   );
 
+  // Screen / page top title (18 / Bold)
+  static const TextStyle pageTitle = TextStyle(
+    fontFamily: _fontFamily,
+    fontSize: 18,
+    fontWeight: FontWeight.w700,
+    color: AppColors.textDark,
+    height: 28 / 18,
+    letterSpacing: -0.5,
+  );
+
   // Body (14 / Medium)
   static const TextStyle body = TextStyle(
     fontFamily: _fontFamily,
